@@ -4,6 +4,11 @@
 
 A fast event-based XML parser.
 
+This is an experimental fork that adds support for UTF-8 names, and thus
+removes some of the cheating mentioned below.  On my machine this is 4% slower
+in the 211KB/xeno-sax benchmark, and 20% in the 211KB/xeno-dom benchmark, while
+memory usage stays about the same.
+
 [Blog post](http://chrisdone.com/posts/fast-haskell-c-parsing-xml).
 
 ## Features

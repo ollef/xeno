@@ -261,18 +261,231 @@ substring s start end = S.take (end - start) (S.drop start s)
 
 -- | Basically @findIndex (not . isNameChar)@, but doesn't allocate.
 parseName :: ByteString -> Int -> Int
-parseName str index =
-  if not (isNameChar1 (s_index str index))
-     then index
-     else parseName' str (index + 1)
+parseName str index = case s_index str index of
+  b1 | 97 <= b1 && b1 <= 122 -> parseName' str (index + 1)
+  b1 | 65 <= b1 && b1 <= 90 -> parseName' str (index + 1)
+  95 -> parseName' str (index + 1)
+  58 -> parseName' str (index + 1)
+  195 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 150 -> parseName' str (index + 2)
+    b2 | 152 <= b2 && b2 <= 182 -> parseName' str (index + 2)
+    b2 | 184 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  b1 | 196 <= b1 && b1 <= 203 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  205 -> case s_index str (index + 1) of
+    b2 | 176 <= b2 && b2 <= 189 -> parseName' str (index + 2)
+    191 -> parseName' str (index + 2)
+    _ -> index
+  b1 | 206 <= b1 && b1 <= 223 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  224 -> case s_index str (index + 1) of
+    b2 | 160 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  225 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  226 -> case s_index str (index + 1) of
+    128 -> case s_index str (index + 2) of
+      b3 | 140 <= b3 && b3 <= 141 -> parseName' str (index + 3)
+      _ -> index
+    129 -> case s_index str (index + 2) of
+      b3 | 176 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 130 <= b2 && b2 <= 133 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    134 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 143 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 176 <= b2 && b2 <= 190 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 175 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  227 -> case s_index str (index + 1) of
+    128 -> case s_index str (index + 2) of
+      b3 | 129 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 129 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  b1 | 228 <= b1 && b1 <= 236 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  237 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 159 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  239 -> case s_index str (index + 1) of
+    b2 | 164 <= b2 && b2 <= 182 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    183 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 143 -> parseName' str (index + 3)
+      b3 | 176 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 184 <= b2 && b2 <= 190 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 189 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  240 -> case s_index str (index + 1) of
+    b2 | 144 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> case s_index str (index + 3) of
+        b4 | 128 <= b4 && b4 <= 191 -> parseName' str (index + 4)
+        _ -> index
+      _ -> index
+    _ -> index
+  b1 | 241 <= b1 && b1 <= 242 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> case s_index str (index + 3) of
+        b4 | 128 <= b4 && b4 <= 191 -> parseName' str (index + 4)
+        _ -> index
+      _ -> index
+    _ -> index
+  243 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 175 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> case s_index str (index + 3) of
+        b4 | 128 <= b4 && b4 <= 191 -> parseName' str (index + 4)
+        _ -> index
+      _ -> index
+    _ -> index
+  _ -> index
 
 -- | Basically @findIndex (not . isNameChar)@, but doesn't allocate.
 parseName' :: ByteString -> Int -> Int
-parseName' str index =
-  if not (isNameChar (s_index str index))
-     then index
-     else parseName' str (index + 1)
-{-# INLINE parseName' #-}
+parseName' str index = case s_index str index of
+  b1 | 97 <= b1 && b1 <= 122 -> parseName' str (index + 1)
+  b1 | 65 <= b1 && b1 <= 90 -> parseName' str (index + 1)
+  95 -> parseName' str (index + 1)
+  58 -> parseName' str (index + 1)
+  45 -> parseName' str (index + 1)
+  46 -> parseName' str (index + 1)
+  b1 | 48 <= b1 && b1 <= 57 -> parseName' str (index + 1)
+  194 -> case s_index str (index + 1) of
+    183 -> parseName' str (index + 2)
+    _ -> index
+  195 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 150 -> parseName' str (index + 2)
+    b2 | 152 <= b2 && b2 <= 182 -> parseName' str (index + 2)
+    b2 | 184 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  b1 | 196 <= b1 && b1 <= 203 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  204 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  205 -> case s_index str (index + 1) of
+    b2 | 176 <= b2 && b2 <= 189 -> parseName' str (index + 2)
+    191 -> parseName' str (index + 2)
+    b2 | 128 <= b2 && b2 <= 175 -> parseName' str (index + 2)
+    _ -> index
+  b1 | 206 <= b1 && b1 <= 223 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> parseName' str (index + 2)
+    _ -> index
+  224 -> case s_index str (index + 1) of
+    b2 | 160 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  225 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  226 -> case s_index str (index + 1) of
+    128 -> case s_index str (index + 2) of
+      b3 | 140 <= b3 && b3 <= 141 -> parseName' str (index + 3)
+      191 -> parseName' str (index + 3)
+      _ -> index
+    129 -> case s_index str (index + 2) of
+      b3 | 176 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      128 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 130 <= b2 && b2 <= 133 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    134 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 143 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 176 <= b2 && b2 <= 190 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 175 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  227 -> case s_index str (index + 1) of
+    128 -> case s_index str (index + 2) of
+      b3 | 129 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 129 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  b1 | 228 <= b1 && b1 <= 236 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  237 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 159 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  239 -> case s_index str (index + 1) of
+    b2 | 164 <= b2 && b2 <= 182 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    183 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 143 -> parseName' str (index + 3)
+      b3 | 176 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    b2 | 184 <= b2 && b2 <= 190 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> parseName' str (index + 3)
+      _ -> index
+    191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 189 -> parseName' str (index + 3)
+      _ -> index
+    _ -> index
+  240 -> case s_index str (index + 1) of
+    b2 | 144 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> case s_index str (index + 3) of
+        b4 | 128 <= b4 && b4 <= 191 -> parseName' str (index + 4)
+        _ -> index
+      _ -> index
+    _ -> index
+  b1 | 241 <= b1 && b1 <= 242 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 191 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> case s_index str (index + 3) of
+        b4 | 128 <= b4 && b4 <= 191 -> parseName' str (index + 4)
+        _ -> index
+      _ -> index
+    _ -> index
+  243 -> case s_index str (index + 1) of
+    b2 | 128 <= b2 && b2 <= 175 -> case s_index str (index + 2) of
+      b3 | 128 <= b3 && b3 <= 191 -> case s_index str (index + 3) of
+        b4 | 128 <= b4 && b4 <= 191 -> parseName' str (index + 4)
+        _ -> index
+      _ -> index
+    _ -> index
+  _ -> index
 
 -- | Get index of an element starting from offset.
 elemIndexFrom :: Word8 -> ByteString -> Int -> Maybe Int
@@ -288,21 +501,6 @@ elemIndexFrom c str offset = fmap (+ offset) (S.elemIndex c (S.drop offset str))
 isSpaceChar :: Word8 -> Bool
 isSpaceChar c = c == 32 || (c <= 10 && c >= 9) || c == 13
 {-# INLINE isSpaceChar #-}
-
--- | Is the character a valid first tag/attribute name constituent?
--- 'a'-'z', 'A'-'Z', '_', ':'
-isNameChar1 :: Word8 -> Bool
-isNameChar1 c =
-  (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || c == 95 || c == 58
-{-# INLINE isNameChar1 #-}
-
--- | Is the character a valid tag/attribute name constituent?
--- isNameChar1 + '-', '.', '0'-'9'
-isNameChar :: Word8 -> Bool
-isNameChar c =
-  (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || c == 95 || c == 58 ||
-  c == 45 || c == 46 || (c >= 48 && c <= 57)
-{-# INLINE isNameChar #-}
 
 -- | Char for '\''.
 quoteChar :: Word8

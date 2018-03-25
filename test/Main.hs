@@ -6,6 +6,7 @@ module Main where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.UTF8 as UTF8
 import           Test.Hspec
 import           Xeno.SAX
 import           Xeno.DOM
@@ -73,6 +74,7 @@ extra_examples_sax =
     [(True, "<some-example/>")
     ,(True, "<a numeric1=\"attribute\"/>")
     ,(True, "<also.a.dot></also.a.dot>")
+    ,(True, UTF8.fromString "<Åmål/>")
     ]
 
 -- | We want to make sure that the parser doesn't jump out of the CDATA
